@@ -2,9 +2,9 @@
  * Created by xpan on 4/18/15.
  */
 
-function route(handle, pathname, resp) {
+function route(handle, pathname, req, resp) {
     if (typeof handle[pathname] == 'function') {
-        handle[pathname](resp);
+        handle[pathname](req, resp);
     } else {
         errorHandler(resp);
     }
