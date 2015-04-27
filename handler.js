@@ -5,7 +5,7 @@ var exec = require("child_process").exec;
 var formidable = require("formidable");
 var fs = require("fs");
 
-//var imgPath = "";
+var imgPath = "";
 
 function start(request, response) {
 
@@ -54,9 +54,12 @@ function start(request, response) {
 function upload(request, response) {
     var form = new formidable.IncomingForm();
     form.parse(request, function (err, fields, files) {
-        //imgPath = files.upload.path;
+        console.log(imgPath);
+        if(imgPath == ""){
+            imgPath = files.upload.path;
+        }
         //console.log("upload/imgPath" + imgPath);
-        fs.rename(files.upload.path, "/Users/xinpan/Desktop/1.png");
+        fs.rename(files.upload.path, imgPath);
         response.writeHead(200, {"Content-Type": "text/html"});
         response.write("received image:<br/>");
         response.write("<img src='/show' />");
@@ -66,7 +69,7 @@ function upload(request, response) {
 }
 
 function show(request, response) {
-    fs.readFile("/Users/xinpan/Desktop/1.png", "binary", function (err, file) {
+    fs.readFile(imgPath, "binary", function (err, file) {
         if (err) {
             response.write("Error");
         } else {
